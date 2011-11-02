@@ -6,6 +6,9 @@
 	<security-role>
 		<role-name>supervisor</role-name>
 	</security-role>
+	<security-role>
+		<role-name>developer</role-name>
+	</security-role>
 
 	<!--request.isUserInRole("vip")-->
 	<servlet>
@@ -26,6 +29,11 @@
 	<servlet>
 		<servlet-name>UserPrincipal</servlet-name>
 		<servlet-class>com.example.UserPrincipal</servlet-class>
+		<security-role-ref>
+			<description/>
+			<role-name>DEVELOPER</role-name>
+			<role-link>developer</role-link>
+		</security-role-ref>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserPrincipal</servlet-name>
@@ -41,4 +49,26 @@
 			<form-error-page>/error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
+
+	<!--Servlet for Security Constraint Testing-->
+	<servlet>
+		<servlet-name>Foo</servlet-name>
+		<servlet-class>com.example.FooServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Foo</servlet-name>
+		<url-pattern>/Bar/Baz/*</url-pattern>
+	</servlet-mapping>
+
+	<!--Security Constraint-->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Foo</web-resource-name>
+			<url-pattern>/Bar/Baz/*</url-pattern>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>DEVELOPER</role-name>
+		</auth-constraint>
+	</security-constraint>
 </web-app>
